@@ -234,7 +234,7 @@
                 </fieldset>
                 <button type="submit">Register</button>
             </form>
-            <a id="registerLink" href="index.php">Click here to log in!</a>
+            <a href="index.php">Click here to log in!</a>
         </div>
     </body>
 </html>
