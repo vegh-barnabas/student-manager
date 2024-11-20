@@ -23,49 +23,53 @@
                 // Validate username
                 $data["username"] = null;
                 if (is_empty($input, "username")) {
-                    $errors[] = "Username is mandatory!";
+                    $errors["username"] = "Username is mandatory!";
                 } 
                 else if (strlen($input["username"]) < 3 || strlen($input["username"]) > 8) {
-                    $errors[] = "Username should be more than 3 characters, and less than 8 characters long!";
+                    $errors["username"] = "Username should be more than 3 characters, and less than 8 characters long!";
                 }
                 else {
                     $data["username"] = trim($input["username"]);
                 }
 
                 // Validate password
+                $skip_password_again_validation = true;
                 $data["password"] = null;
                 if (is_empty($input, "password")) {
-                    $errors[] = "Password is mandatory!";
+                    $errors["password"] = "Password is mandatory!";
                 }
                 else if (strlen($input["password"]) < 3) {
-                    $errors[] = "Password should be more than 3 characters long!";
+                    $errors["password"] = "Password should be more than 3 characters long!";
                 }
                 else if (!contains_letter_and_number($input["password"])) {
-                    $errors[] = "Password should contain at least one letter and one number!";
+                    $errors["password"] = "Password should contain at least one letter and one number!";
                 }
                 else {
                     $data["password"] = trim($input["password"]);
+                    $skip_password_again_validation = false;
                 }
 
                 // Validate password again
-                $data["passwordAgain"] = null;
-                if ($input["passwordAgain"] != $data["password"]) {
-                    $errors[] = "Passwords do not match!";
-                }
-                else {
-                    $data["passwordAgain"] = trim($input["passwordAgain"]);
+                if (!$skip_password_again_validation) {
+                    $data["passwordAgain"] = null;
+                    if ($input["passwordAgain"] != $data["password"]) {
+                        $errors["passwordAgain"] = "Passwords do not match!";
+                    }
+                    else {
+                        $data["passwordAgain"] = trim($input["passwordAgain"]);
+                    }
                 }
 
                 // Validate neptun code
                 $data["neptun"] = null;
                 if (is_empty($input, "neptun")) {
-                    $errors[] = "Neptun is mandatory!";
+                    $errors["neptun"] = "Neptun is mandatory!";
                 }
                 else if (strlen($input["neptun"]) != 6) {
-                    $errors[] = "Neptun code should be 6 characters long!";
+                    $errors["neptun"] = "Neptun code should be 6 characters long!";
                 }
                 else if (strtoupper($input["neptun"]) != $input["neptun"]) {
-                    $errors[] = "Neptun code should be all uppercase letters and numbers!";
+                    $errors["neptun"] = "Neptun code should be all uppercase letters and numbers!";
                 }
                 else {
                     $data["neptun"] = trim($input["neptun"]);
@@ -74,7 +78,7 @@
                 // Validate gender
                 $data["gender"] = null;
                 if (is_empty($input, "gender") || !in_array($input["gender"], ["male", "female"])) {
-                    $errors[] = "Gender must be selected as Male or Female!";
+                    $errors["gender"] = "Gender must be selected as Male or Female!";
                 } else {
                     $data["gender"] = $input["gender"];
                 }
@@ -118,14 +122,6 @@
                 <h3 class="successMessage">Registration successful! Now you can log in!</h3>
             <?php endif ?>
 
-            <?php if ($errors): ?>
-                <ul>
-                    <?php foreach ($errors as $error): ?>
-                        <li><?= $error ?></li>
-                    <?php endforeach ?>
-                </ul>
-            <?php endif ?>
-
             <form id="registerForm" method="GET">
                 <label for="username">Username</label>
                 <input
@@ -133,32 +129,51 @@
                     id="username"
                     name="username"
                     placeholder="Enter a username"
+                    value="<?= $data['username'] ?? '' ?>"
                     required
                 />
+                <?php if (isset($errors['username'])): ?>
+                    <div class="error"><?= $errors['username'] ?></div>
+                <?php endif ?>
+
                 <label for="password">Password</label>
                 <input
                     type="password"
                     id="password"
                     name="password"
                     placeholder="Enter a password"
+                    value="<?= $data['password'] ?? '' ?>"
                     required
                 />
+                <?php if (isset($errors['password'])): ?>
+                    <div class="error"><?= $errors['password'] ?></div>
+                <?php endif ?>
+
                 <label for="passwordAgain">Password again</label>
                 <input
                     type="password"
                     id="passwordAgain"
                     name="passwordAgain"
                     placeholder="Enter the password again"
+                    value="<?= $data['passwordAgain'] ?? '' ?>"
                     required
                 />
+                <?php if (isset($errors['passwordAgain'])): ?>
+                    <div class="error"><?= $errors['passwordAgain'] ?></div>
+                <?php endif ?>
+
                 <label for="neptun">Neptun Code</label>
                 <input
                     type="text"
                     id="neptun"
                     name="neptun"
                     placeholder="Enter a neptun code"
+                    value="<?= $data['neptun'] ?? '' ?>"
                     required
                 />
+                <?php if (isset($errors['neptun'])): ?>
+                    <div class="error"><?= $errors['neptun'] ?></div>
+                <?php endif ?>
 
                 <fieldset>
                     <legend>Gender</legend>
@@ -168,6 +183,7 @@
                             id="male"
                             name="gender"
                             value="male"
+                            <?= isset($data['gender']) && $data['gender'] === 'male' ? 'checked' : '' ?>
                         />
                         <label for="male">Male</label>
                     </div>
@@ -177,10 +193,14 @@
                             id="female"
                             name="gender"
                             value="female"
+                            <?= isset($data['gender']) && $data['gender'] === 'female' ? 'checked' : '' ?>
                         />
                         <label for="female">Female</label>
                     </div>
                 </fieldset>
+                    <?php if (isset($errors['gender'])): ?>
+                        <div class="error"><?= $errors['gender'] ?></div>
+                    <?php endif ?>
 
                 <fieldset>
                     <legend>Your classes</legend>
@@ -189,7 +209,7 @@
                             type="checkbox" 
                             id="webprog" 
                             name="webprog"
-                            checked
+                            <?= in_array('webprog', $data['classes'] ?? []) ? 'checked' : '' ?>
                         />
                         <label for="webprog">Webprogramming</label>
                     </div>
@@ -198,6 +218,7 @@
                             type="checkbox" 
                             id="discrete" 
                             name="discrete"
+                            <?= in_array('discrete', $data['classes'] ?? []) ? 'checked' : '' ?>
                         />
                         <label for="discrete">Discrete Mathematics</label>
                     </div>
@@ -206,6 +227,7 @@
                             type="checkbox" 
                             id="linux" 
                             name="linux"
+                            <?= in_array('linux', $data['classes'] ?? []) ? 'checked' : '' ?>
                         />
                         <label for="linux">Linux Basics</label>
                     </div>
