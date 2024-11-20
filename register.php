@@ -33,7 +33,7 @@
                 }
 
                 // Validate password
-                $skip_password_again_validation = true;
+                $skip_password_confirm_validation = true;
                 $data["password"] = null;
                 if (is_empty($input, "password")) {
                     $errors["password"] = "Password is mandatory!";
@@ -46,17 +46,17 @@
                 }
                 else {
                     $data["password"] = trim($input["password"]);
-                    $skip_password_again_validation = false;
+                    $skip_password_confirm_validation = false;
                 }
 
                 // Validate password again
-                if (!$skip_password_again_validation) {
-                    $data["passwordAgain"] = null;
-                    if ($input["passwordAgain"] != $data["password"]) {
-                        $errors["passwordAgain"] = "Passwords do not match!";
+                if (!$skip_password_confirm_validation) {
+                    $data["confirmPassword"] = null;
+                    if ($input["confirmPassword"] != $data["password"]) {
+                        $errors["confirmPassword"] = "Passwords do not match!";
                     }
                     else {
-                        $data["passwordAgain"] = trim($input["passwordAgain"]);
+                        $data["confirmPassword"] = trim($input["confirmPassword"]);
                     }
                 }
 
@@ -149,17 +149,17 @@
                     <div class="error"><?= $errors['password'] ?></div>
                 <?php endif ?>
 
-                <label for="passwordAgain">Password again</label>
+                <label for="confirmPassword">Confirm password</label>
                 <input
                     type="password"
-                    id="passwordAgain"
-                    name="passwordAgain"
-                    placeholder="Enter the password again"
-                    value="<?= $data['passwordAgain'] ?? '' ?>"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    placeholder="Confirm your password"
+                    value="<?= $data['confirmPassword'] ?? '' ?>"
                     required
                 />
-                <?php if (isset($errors['passwordAgain'])): ?>
-                    <div class="error"><?= $errors['passwordAgain'] ?></div>
+                <?php if (isset($errors['confirmPassword'])): ?>
+                    <div class="error"><?= $errors['confirmPassword'] ?></div>
                 <?php endif ?>
 
                 <label for="neptun">Neptun Code</label>
