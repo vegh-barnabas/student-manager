@@ -10,6 +10,8 @@
         <?php require 'helper-functions.php' ?>
 
         <?php
+            include 'storage.php'; // or require
+
             // - Validation rules -
             // Username should be: minimum 3 characters, maximum 8 characters
             // Password should be: minimum 3 characters, no maximum, should contain a number and a letter
@@ -96,6 +98,8 @@
             }
 
             // Start
+            $user_storage = new Storage(new JsonIO('users.json'));
+
             $successful = false;
             $errors = [];
             $data = [];
@@ -107,7 +111,13 @@
             if (validate($input, $data, $errors)) {
                 $successful = true;
 
-                // Save to the database later
+                $id = $user_storage->add([
+                "username" => $data["username"],
+                "password" => $data["password"], // We will hash this later
+                "neptun" => $data["neptun"],
+                "gender" => $data["gender"],
+                "classes" => $data["classes"]
+                ]);
             }
         ?>
 
