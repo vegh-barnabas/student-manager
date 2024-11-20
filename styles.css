@@ -1,0 +1,122 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    text-align: center;
+    color: #444;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form label {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+form input {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+form button {
+    padding: 10px;
+    color: #fff;
+    background: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background: #0056b3;
+}
+
+.navbar {
+    background: #007bff;
+    padding: 10px;
+    color: #fff;
+    display: flex;
+    gap: 38px;
+}
+
+.navbar span {
+    font-weight: bold;
+}
+
+.navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 6px;
+}
+
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+    opacity: 0.7;
+    padding: 5px 10px;
+}
+
+.navbar a:hover {
+    opacity: 1;
+}
+
+.navbar a.current {
+    background-color: #0056b3;
+    color: #fff;
+    border-radius: 5px;
+    opacity: 1;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th,
+table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.statistics {
+    margin-top: 20px;
+    background: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#registerLink {
+    padding-top: 16px;
+}
+
+fieldset {
+    padding: 0;
+    padding-top: 6px;
+    margin: 6px;
+}
