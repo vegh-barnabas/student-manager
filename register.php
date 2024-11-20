@@ -12,7 +12,7 @@
         <?php
             // - Validation rules -
             // Username should be: minimum 3 characters, maximum 8 characters
-            // Password should be: minimum 3 characters, no maximum, should contain number and letter too
+            // Password should be: minimum 3 characters, no maximum, should contain a number and a letter
             // Neptun code should be: 6 characters long, uppercase letters or numbers
             // Gender should be: Either Male or Female
             // Classes should be: Empty, or any elements from the checkbox options
@@ -29,7 +29,7 @@
                     $errors[] = "Username should be more than 3 characters, and less than 8 characters long!";
                 }
                 else {
-                $data["username"] = $input["username"];
+                    $data["username"] = trim($input["username"]);
                 }
 
                 // Validate password
@@ -44,33 +44,50 @@
                     $errors[] = "Password should contain at least one letter and one number!";
                 }
                 else {
-                    $data["password"] = $input["password"];
-                } 
+                    $data["password"] = trim($input["password"]);
+                }
 
                 // Validate password again
                 $data["passwordAgain"] = null;
                 if ($input["passwordAgain"] != $data["password"]) {
-                    $errors[] = "Passwords does not match!";
+                    $errors[] = "Passwords do not match!";
                 }
                 else {
-                    $data["passwordAgain"] = $input["passwordAgain"];
-                } 
+                    $data["passwordAgain"] = trim($input["passwordAgain"]);
+                }
 
                 // Validate neptun code
                 $data["neptun"] = null;
                 if (is_empty($input, "neptun")) {
                     $errors[] = "Neptun is mandatory!";
                 }
-                else if (!strlen($input["neptun"]) == 6) {
+                else if (strlen($input["neptun"]) != 6) {
                     $errors[] = "Neptun code should be 6 characters long!";
                 }
                 else if (strtoupper($input["neptun"]) != $input["neptun"]) {
                     $errors[] = "Neptun code should be all uppercase letters and numbers!";
                 }
                 else {
-                    $data["neptun"] = $input["neptun"];
-                } 
-                
+                    $data["neptun"] = trim($input["neptun"]);
+                }
+
+                // Validate gender
+                $data["gender"] = null;
+                if (is_empty($input, "gender") || !in_array($input["gender"], ["male", "female"])) {
+                    $errors[] = "Gender must be selected as Male or Female!";
+                } else {
+                    $data["gender"] = $input["gender"];
+                }
+
+                // Validate classes (checkboxes)
+                $data["classes"] = [];
+                $validClasses = ["webprog", "discrete", "linux"];
+                foreach ($validClasses as $class) {
+                    if (isset($input[$class])) {
+                        $data["classes"][] = $class;
+                    }
+                }
+
                 return !(bool)$errors;
             }
 
@@ -81,12 +98,12 @@
             $input = $_GET;
 
             var_dump($input);
-            
+
             // Check
             if (validate($input, $data, $errors)) {
-              $successful = true;
+                $successful = true;
 
-              // Save to the database later
+                // Save to the database later
             }
         ?>
 
@@ -100,16 +117,16 @@
             <?php if ($successful): ?>
                 <h3 class="successMessage">Registration successful! Now you can log in!</h3>
             <?php endif ?>
-            
-            <?php if ($errors) : ?>
+
+            <?php if ($errors): ?>
                 <ul>
-                <?php foreach($errors as $error) : ?>
-                    <li><?= $error ?></li>
-                <?php endforeach ?>
+                    <?php foreach ($errors as $error): ?>
+                        <li><?= $error ?></li>
+                    <?php endforeach ?>
                 </ul>
             <?php endif ?>
 
-            <form id="registerForm" type="POST">
+            <form id="registerForm" method="GET">
                 <label for="username">Username</label>
                 <input
                     type="text"
@@ -198,4 +215,4 @@
             <a id="registerLink" href="index.php">Click here to log in!</a>
         </div>
     </body>
-</html>         
+</html>
