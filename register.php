@@ -7,43 +7,139 @@
         <link rel="stylesheet" href="styles.css" />
     </head>
     <body>
+        <?php require 'helper-functions.php' ?>
+
+        <?php
+            // - Validation rules -
+            // Username should be: minimum 3 characters, maximum 8 characters
+            // Password should be: minimum 3 characters, no maximum, should contain number and letter too
+            // Neptun code should be: 6 characters long, uppercase letters or numbers
+            // Gender should be: Either Male or Female
+            // Classes should be: Empty, or any elements from the checkbox options
+
+            // & means that the argument is being passed by reference rather than by value
+            // so the function can directly modify the original variable's value
+            function validate($input, &$data, &$errors) {
+                // Validate username
+                $data["username"] = null;
+                if (is_empty($input, "username")) {
+                    $errors[] = "Username is mandatory!";
+                } 
+                else if (strlen($input["username"]) < 3 || strlen($input["username"]) > 8) {
+                    $errors[] = "Username should be more than 3 characters, and less than 8 characters long!";
+                }
+                else {
+                $data["username"] = $input["username"];
+                }
+
+                // Validate password
+                $data["password"] = null;
+                if (is_empty($input, "password")) {
+                    $errors[] = "Password is mandatory!";
+                }
+                else if (strlen($input["password"]) < 3) {
+                    $errors[] = "Password should be more than 3 characters long!";
+                }
+                else if (!contains_letter_and_number($input["password"])) {
+                    $errors[] = "Password should contain at least one letter and one number!";
+                }
+                else {
+                    $data["password"] = $input["password"];
+                } 
+
+                // Validate password again
+                $data["passwordAgain"] = null;
+                if ($input["passwordAgain"] != $data["password"]) {
+                    $errors[] = "Passwords does not match!";
+                }
+                else {
+                    $data["passwordAgain"] = $input["passwordAgain"];
+                } 
+
+                // Validate neptun code
+                $data["neptun"] = null;
+                if (is_empty($input, "neptun")) {
+                    $errors[] = "Neptun is mandatory!";
+                }
+                else if (!strlen($input["neptun"]) == 6) {
+                    $errors[] = "Neptun code should be 6 characters long!";
+                }
+                else if (strtoupper($input["neptun"]) != $input["neptun"]) {
+                    $errors[] = "Neptun code should be all uppercase letters and numbers!";
+                }
+                else {
+                    $data["neptun"] = $input["neptun"];
+                } 
+                
+                return !(bool)$errors;
+            }
+
+            // Start
+            $successful = false;
+            $errors = [];
+            $data = [];
+            $input = $_GET;
+
+            var_dump($input);
+            
+            // Check
+            if (validate($input, $data, $errors)) {
+              $successful = true;
+
+              // Save to the database later
+            }
+        ?>
+
         <nav class="navbar">
             <span>Student Manager</span>
         </nav>
 
         <div class="container">
             <h1>Student Manager - Register</h1>
-            <form id="registerForm">
-                <label for="regUsername">Username</label>
+
+            <?php if ($successful): ?>
+                <h3 class="successMessage">Registration successful! Now you can log in!</h3>
+            <?php endif ?>
+            
+            <?php if ($errors) : ?>
+                <ul>
+                <?php foreach($errors as $error) : ?>
+                    <li><?= $error ?></li>
+                <?php endforeach ?>
+                </ul>
+            <?php endif ?>
+
+            <form id="registerForm" type="POST">
+                <label for="username">Username</label>
                 <input
                     type="text"
-                    id="regUsername"
-                    name="regUsername"
+                    id="username"
+                    name="username"
                     placeholder="Enter a username"
                     required
                 />
-                <label for="regPassword">Password</label>
+                <label for="password">Password</label>
                 <input
                     type="password"
-                    id="regPassword"
-                    name="regPassword"
+                    id="password"
+                    name="password"
                     placeholder="Enter a password"
                     required
                 />
-                <label for="regPasswordAgain">Password again</label>
+                <label for="passwordAgain">Password again</label>
                 <input
                     type="password"
-                    id="regPasswordAgain"
-                    name="regPasswordAgain"
+                    id="passwordAgain"
+                    name="passwordAgain"
                     placeholder="Enter the password again"
                     required
                 />
                 <label for="neptun">Neptun Code</label>
                 <input
-                    type="password"
+                    type="text"
                     id="neptun"
                     name="neptun"
-                    placeholder="Enter the neptun code"
+                    placeholder="Enter a neptun code"
                     required
                 />
 
@@ -97,8 +193,6 @@
                         <label for="linux">Linux Basics</label>
                     </div>
                 </fieldset>
-
-
                 <button type="submit">Register</button>
             </form>
             <a id="registerLink" href="index.php">Click here to log in!</a>
