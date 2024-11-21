@@ -92,9 +92,11 @@
                             <td><?= $student["DOB"] ?></td>
                             <td><?= $student["gender"] === 1 ? "Male" : "Female" ?></td>
                             <td>
-                                <?php foreach($student["classes"] as $class): ?>
-                                    <div><?= $class ?></div>
-                                <?php endforeach ?>
+                                <ul>
+                                    <?php foreach($student["classes"] as $class): ?>
+                                        <li><?= $class ?></li>
+                                    <?php endforeach ?>
+                                </ul>
                             </td>
                         </tr>
                     <?php endforeach ?>

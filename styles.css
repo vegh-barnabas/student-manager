@@ -104,6 +104,10 @@ table td {
     border-bottom: 1px solid #ddd;
 }
 
+tbody ul {
+    margin: 0;
+}
+
 .statistics {
     margin-top: 20px;
     background: #f1f1f1;
