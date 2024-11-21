@@ -113,11 +113,11 @@
                     $successful = true;
     
                     $id = $user_storage->add([
-                    "username" => $data["username"],
-                    "password" => $data["password"], // We will hash this later
-                    "neptun" => $data["neptun"],
-                    "gender" => $data["gender"],
-                    "classes" => $data["classes"]
+                        "username" => $data["username"],
+                        "password" => $data["password"], // We will hash this later
+                        "neptun" => $data["neptun"],
+                        "gender" => $data["gender"],
+                        "classes" => $data["classes"]
                     ]);
                 }
             }
