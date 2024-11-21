@@ -107,17 +107,19 @@
 
             var_dump($input);
 
-            // Check
-            if (validate($input, $data, $errors)) {
-                $successful = true;
-
-                $id = $user_storage->add([
-                "username" => $data["username"],
-                "password" => $data["password"], // We will hash this later
-                "neptun" => $data["neptun"],
-                "gender" => $data["gender"],
-                "classes" => $data["classes"]
-                ]);
+            // Check if the form is submitted via GET
+            if (count($_GET) !== 0) {
+                if (validate($input, $data, $errors)) {
+                    $successful = true;
+    
+                    $id = $user_storage->add([
+                    "username" => $data["username"],
+                    "password" => $data["password"], // We will hash this later
+                    "neptun" => $data["neptun"],
+                    "gender" => $data["gender"],
+                    "classes" => $data["classes"]
+                    ]);
+                }
             }
         ?>
 
