@@ -138,3 +138,7 @@ fieldset {
     font-size: 1em;
     color: #d9534f;
 }
+
+#loginForm button {
+    margin-top: 6px;
+}
