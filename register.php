@@ -1,4 +1,117 @@
-<?php session_start() ?>
+<?php
+    session_start();
+
+    require "helper-functions.php";
+    require "storage.php";
+
+    // - Validation rules -
+    // Username should be: minimum 3 characters, maximum 8 characters
+    // Password should be: minimum 3 characters, no maximum, should contain number and letter too
+    // Gender should be: Either Male or Female
+    // Classes should be: Empty, or any elements from the checkbox options
+
+    // & means that the argument is being passed by reference rather than by value
+    // so the function can directly modify the original variable's value
+    function validate($input, &$data, &$errors) {
+        global $user_storage;
+
+        // Username
+        $data["username"] = null;
+        if(is_empty($input, "username")) {
+            $errors["username"] = "Username is mandatory!";
+        }
+        else if(strlen($input["username"]) < 3 || strlen($input["username"]) > 8) {
+            $errors["username"] = "Username should be more than 3 characters, and less than 8 characters long!";
+        }
+        else if($user_storage->findOne(['username' => $input["username"]]) != NULL) {
+            $errors["username"] = "This username is taken!";
+        }
+        else {
+            $data["username"] = $input["username"];
+        }
+
+        // Password
+        $data["password"] = null;
+        if(is_empty($input, "password")) {
+            $errors["password"] = "Password is mandatory!";
+        }
+        else if(strlen($input["password"]) < 3) {
+            $errors["password"] = "Password should be more than 3 characters long!";
+        }
+        else if(!contains_letter_and_number($input["password"])) {
+            $errors["password"] = "Password should contain at least one letter and one number!";
+        }
+        else if(trim($input["password"]) != trim($input["passwordConfirm"])) {
+            $errors["password"] = "Passwords don't match!";
+            $errors["passwordConfirm"] = "Passwords don't match!";
+        }
+        else {
+            $data["password"] = $input["password"];
+        }
+
+        // Gender
+        $data["gender"] = null;
+        if(is_empty($input, "gender")) {
+            $errors["gender"] = "Gender is mandatory!";
+        }
+        // $input["gender"] !== "male" || $input["gender"] !== "female"
+        else if(!in_array($input["gender"], ["male", "female"])) {
+            $errors["genders"] = "Gender must be selected as Male or Female!";
+        }
+        else {
+            $data["gender"] = $input["gender"];
+        }
+
+        // Validate classes
+        $data["classes"] = null;
+        $valid_classes = ["webprog", "discrete", "linux"];
+        foreach ($valid_classes as $class) {
+            // for example if you ticked $input["linux"]
+            if(isset($input[$class])) {
+                $data["classes"][] = $class; // push into array of classes
+            }
+        }
+
+        // 2 states:
+        // if it's [], it will be false
+        // if it's ["..."], it will be true
+        return !(bool)$errors;
+    }
+
+    // Start
+    $user_storage = new Storage(new JsonIO("users.json"));
+    $success = false;
+    $errors = [];
+    $data = [];
+    $input = $_GET;
+
+    if(count($input) !== 0) {
+        if(validate($input, $data, $errors)) {
+            // Validation successful
+            $success = true;
+
+            $neptun = generate_random_neptun();
+            $user_with_neptun = $user_storage->findOne(["neptun" => $neptun]);
+            while(isset($user_with_neptun)) {
+                $neptun = generate_random_neptun();
+            }
+
+            $user_id = $user_storage->add([
+                "username" => $data["username"],
+                "password" => password_hash($data['password'], PASSWORD_DEFAULT),
+                "neptun" => $neptun,
+                "gender" => $data["gender"],
+                "classes" => $data["classes"]
+            ]);
+
+            $user = $user_storage->findById($user_id);
+
+            $_SESSION["user"] = $user;
+            redirect("student-list.php");
+        }
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -8,122 +121,6 @@
         <link rel="stylesheet" href="styles.css" />
     </head>
     <body>
-        <?php
-            require "helper-functions.php";
-            require "storage.php";
-
-            // - Validation rules -
-            // Username should be: minimum 3 characters, maximum 8 characters
-            // Password should be: minimum 3 characters, no maximum, should contain number and letter too
-            // Gender should be: Either Male or Female
-            // Classes should be: Empty, or any elements from the checkbox options
-
-            // & means that the argument is being passed by reference rather than by value
-            // so the function can directly modify the original variable's value
-            function validate($input, &$data, &$errors) {
-                global $user_storage;
-
-                // Username
-                $data["username"] = null;
-                if(is_empty($input, "username")) {
-                    $errors["username"] = "Username is mandatory!";
-                }
-                else if(strlen($input["username"]) < 3 || strlen($input["username"]) > 8) {
-                    $errors["username"] = "Username should be more than 3 characters, and less than 8 characters long!";
-                }
-                else if($user_storage->findOne(['username' => $input["username"]]) != NULL) {
-                    $errors["username"] = "This username is taken!";
-                }
-                else {
-                    $data["username"] = $input["username"];
-                }
-
-                // Password
-                $data["password"] = null;
-                if(is_empty($input, "password")) {
-                    $errors["password"] = "Password is mandatory!";
-                }
-                else if(strlen($input["password"]) < 3) {
-                    $errors["password"] = "Password should be more than 3 characters long!";
-                }
-                else if(!contains_letter_and_number($input["password"])) {
-                    $errors["password"] = "Password should contain at least one letter and one number!";
-                }
-                else if(trim($input["password"]) != trim($input["passwordConfirm"])) {
-                    $errors["password"] = "Passwords don't match!";
-                    $errors["passwordConfirm"] = "Passwords don't match!";
-                }
-                else {
-                    $data["password"] = $input["password"];
-                }
-
-                // Gender
-                $data["gender"] = null;
-                if(is_empty($input, "gender")) {
-                    $errors["gender"] = "Gender is mandatory!";
-                }
-                // $input["gender"] !== "male" || $input["gender"] !== "female"
-                else if(!in_array($input["gender"], ["male", "female"])) {
-                    $errors["genders"] = "Gender must be selected as Male or Female!";
-                }
-                else {
-                    $data["gender"] = $input["gender"];
-                }
-
-                // Validate classes
-                $data["classes"] = null;
-                $valid_classes = ["webprog", "discrete", "linux"];
-                foreach ($valid_classes as $class) {
-                    // for example if you ticked $input["linux"]
-                    if(isset($input[$class])) {
-                        $data["classes"][] = $class; // push into array of classes
-                    }
-                }
-
-                // 2 states:
-                // if it's [], it will be false
-                // if it's ["..."], it will be true
-                return !(bool)$errors;
-            }
-
-            // Start
-            $user_storage = new Storage(new JsonIO("users.json"));
-            $success = false;
-            $errors = [];
-            $data = [];
-            $input = $_GET;
-
-            var_dump($data);
-
-            if(count($input) !== 0) {
-                if(validate($input, $data, $errors)) {
-                    // Validation successful
-                    $success = true;
-
-                    $neptun = generate_random_neptun();
-                    $user_with_neptun = $user_storage->findOne(["neptun" => $neptun]);
-                    var_dump($user_with_neptun);
-                    while(isset($user_with_neptun)) {
-                        $neptun = generate_random_neptun();
-                    }
-
-                    $user_id = $user_storage->add([
-                        "username" => $data["username"],
-                        "password" => password_hash($data['password'], PASSWORD_DEFAULT),
-                        "neptun" => $neptun,
-                        "gender" => $data["gender"],
-                        "classes" => $data["classes"]
-                    ]);
-
-                    $user = $user_storage->findById($user_id);
-
-                    $_SESSION["user"] = $user;
-                    redirect("student-list.php");
-                    var_dump($_SESSION["user"]);
-                }
-            }
-        ?>
-
         <nav class="navbar">
             <span>Student Manager</span>
         </nav>
