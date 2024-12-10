@@ -66,14 +66,14 @@
         ?>
 
         <nav class="navbar">
-            <span>Student Manager</span>
-            <ul>
-                <li>
-                    <a href="student-list.html" class="current">Students</a>
-                </li>
-                <li><a href="#">Add Student</a></li>
-                <li><a href="#">Settings</a></li>
-            </ul>
+            <div id="left">
+                <span id="title">Student Manager</span>
+                <a href="student-list.html" class="current">Students</a>
+                <a href="#">Add student</a>
+            </div>
+            <div id="right">
+                <span id="userInfo"><?= $_SESSION["user"]["username"] ?> | <?= $_SESSION["user"]["neptun"] ?></span>
+            </div>
         </nav>
         <div class="container">
             <?php if(isset($_GET) && $_GET["registration"]): ?>
