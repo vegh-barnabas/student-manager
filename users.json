@@ -1,44 +1,15 @@
 {
-    "6751cea38208c": {
+    "67588ecad11bb": {
         "username": "apple",
-        "password": "$2y$10$6VBEHChCU8h88IPTkHqWm.O9Z5sn3DuyQh49YnJVTnUrYG2ij.Nky",
-        "neptun": "ABC345",
+        "password": "$2y$10$0MWvXJybczZPjHhP1aXHNueO3zaQlezgVrGASPHBL9hWK\/8GykufC",
+        "neptun": "VR1BS0",
+        "dateOfBirth": "2000-04-12",
         "gender": "male",
         "classes": [
-            "discrete"
+            "webprog",
+            "discrete",
+            "linux"
         ],
-        "id": "6751cea38208c"
-    },
-    "67586dd3021eb": {
-        "username": "apple2",
-        "password": "$2y$10$AaS96d9Z0\/uUSbW6anu9S.\/jj4Wn8jt9LIySvHkyVo8vXaka\/kcn6",
-        "neptun": "B926OV",
-        "gender": "male",
-        "classes": null,
-        "id": "67586dd3021eb"
-    },
-    "67586e257fb36": {
-        "username": "apple3",
-        "password": "$2y$10$UNTvoJYYM5n3wPQm.5FI2uCRJBmEvu.YQMSy4NkzBPN2IvAQR4Me6",
-        "neptun": "QNFWK5",
-        "gender": "male",
-        "classes": null,
-        "id": "67586e257fb36"
-    },
-    "67586e3ed6a2b": {
-        "username": "apple4",
-        "password": "$2y$10$qS6Ti7BbZsA\/046ob7oxBOqC3vEmQXp4\/LXM7736B6CqD73gcHgH2",
-        "neptun": "FARA9O",
-        "gender": "male",
-        "classes": null,
-        "id": "67586e3ed6a2b"
-    },
-    "67586ea99f779": {
-        "username": "apple5",
-        "password": "$2y$10$oLWIsf1vXWlOvAYZKFTAF.WMx5hhGLm6ruE0mEgc0YuENn\/OLRjn2",
-        "neptun": "61PUP2",
-        "gender": "male",
-        "classes": null,
-        "id": "67586ea99f779"
+        "id": "67588ecad11bb"
     }
 }
