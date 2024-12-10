@@ -76,7 +76,7 @@
             </div>
         </nav>
         <div class="container">
-            <?php if(isset($_GET) && $_GET["registration"]): ?>
+            <?php if(isset($_GET["registration"]) && $_GET["registration"]): ?>
                 <h3 class="successMessage">Registration successful! You've been automatically logged in!</h3>
             <?php endif ?>
 
