@@ -1,4 +1,26 @@
-<?php session_start() ?>
+<?php
+    session_start();
+
+    require "helper-functions.php";
+    require "storage.php";
+    
+    // Start
+    $user_storage = new Storage(new JsonIO("users.json"));
+    $success = false;
+    $errors = [];
+    $data = [];
+    $input = $_POST;
+
+    if(count($input) !== 0) {
+        $user = $user_storage->findOne(["username" => $input["username"]]);
+        if(password_verify($input["password"], $user["password"])) {
+            // Login successful
+            $_SESSION["user"] = $user;
+            redirect("student-list.php");
+        }
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -8,42 +30,13 @@
         <link rel="stylesheet" href="styles.css" />
     </head>
     <body>
-    <!-- password_verify -->
-     <?php
-        require "helper-functions.php";
-        require "storage.php";
-        
-        // Start
-        $user_storage = new Storage(new JsonIO("users.json"));
-        $success = false;
-        $errors = [];
-        $data = [];
-        $input = $_GET;
-
-        var_dump($data);
-
-        if(count($input) !== 0) {
-            $user = $user_storage->findOne(["username" => $input["username"]]);
-            if(password_verify($input["password"], $user["password"])) {
-                // Login successful
-                var_dump("Login successful");
-                $_SESSION["user"] = $user;
-                var_dump($_SESSION["user"]);
-                redirect("student-list.php");
-            }
-            else {
-                var_dump("Login failed");
-            }
-        }
-     ?>
-
         <nav class="navbar">
             <span>Student Manager</span>
         </nav>
         
         <div class="container">
         <h1>Student Manager - Login</h1>
-            <form id="loginForm" type="GET">
+            <form id="loginForm" method="POST">
                 <label for="username">Username</label>
                 <input
                     type="text"
