@@ -1,4 +1,28 @@
 <?php
+    function is_at_least_18($date_of_birth) {
+        // Extract year, month, and day from the date string
+        $parts = explode('-', $date_of_birth);
+        $year = $parts[0];
+        $month = $parts[1];
+        $day = $parts[2];
+    
+        // Get the current year, month, and day
+        $current_year = date('Y');
+        $current_month = date('m');
+        $current_day = date('d');
+    
+        // Calculate the age
+        $age = $current_year - $year;
+    
+        // Adjust age if the current date is before the birthday this year
+        if ($current_month < $month || ($current_month == $month && $current_day < $day)) {
+            $age--;
+        }
+    
+        // Return true if the age is 18 or older, false otherwise
+        return ($age >= 18);
+    }
+
     function redirect($page) {
         header("Location: $page");
         exit();

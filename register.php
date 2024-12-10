@@ -49,6 +49,18 @@
             $data["password"] = $input["password"];
         }
 
+        // Date Of Birth
+        $data["dateOfBirth"] = null;
+        if(is_empty($input, "dateOfBirth")) {
+            $errors["dateOfBirth"] = "Date Of Birth is mandatory!";
+        }
+        else if(!is_at_least_18($input["dateOfBirth"])) {
+            $errors["dateOfBirth"] = "You must be more than 18 years old to register!";
+        }
+        else {
+            $data["dateOfBirth"] = $input["dateOfBirth"];
+        }
+
         // Gender
         $data["gender"] = null;
         if(is_empty($input, "gender")) {
@@ -100,6 +112,7 @@
                 "username" => $data["username"],
                 "password" => password_hash($data['password'], PASSWORD_DEFAULT),
                 "neptun" => $neptun,
+                "dateOfBirth" => $data["dateOfBirth"],
                 "gender" => $data["gender"],
                 "classes" => $data["classes"]
             ]);
@@ -164,6 +177,17 @@
                 />
                 <?php if(isset($errors["passwordConfirm"])) : ?>
                     <div class="error"><?= $errors["passwordConfirm"] ?></div>
+                <?php endif ?>
+
+                <label for="dateOfBirth">Date Of Birth</label>
+                <input
+                    type="date"
+                    id="dateOfBirth"
+                    name="dateOfBirth"
+                    value="<?= $data["dateOfBirth"] ?? "" ?>"
+                />
+                <?php if(isset($errors["dateOfBirth"])) : ?>
+                    <div class="error"><?= $errors["dateOfBirth"] ?></div>
                 <?php endif ?>
 
                 <fieldset>
