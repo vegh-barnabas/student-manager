@@ -129,7 +129,15 @@ table tbody ul {
 }
 
 .error {
-    color: red;
-    padding-left: 4px;
-    font-size: 13px;
+    font-size: 0.9em;
+    color: #d9534f;
+    padding-top: 2px;
+    padding-left: 6px;
+    margin-bottom: 12px;
+}
+
+.error::before {
+    content: '❌ ';
+    font-size: 1em;
+    color: #d9534f;
 }
