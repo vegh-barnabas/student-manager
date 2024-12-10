@@ -76,6 +76,10 @@
             </ul>
         </nav>
         <div class="container">
+            <?php if(isset($_GET) && $_GET["registration"]): ?>
+                <h3 class="successMessage">Registration successful! You've been automatically logged in!</h3>
+            <?php endif ?>
+
             <h1>Student List</h1>
             <table>
                 <thead>

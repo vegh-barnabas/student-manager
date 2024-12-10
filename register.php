@@ -82,7 +82,7 @@
     $user_storage = new Storage(new JsonIO("users.json"));
     $errors = [];
     $data = [];
-    $input = $_GET;
+    $input = $_POST;
 
     if(count($input) !== 0) {
         if(validate($input, $data, $errors)) {
@@ -108,7 +108,7 @@
             $user = $user_storage->findById($user_id);
             $_SESSION["user"] = $user;
 
-            redirect("student-list.php");
+            redirect("student-list.php?registration=true");
         }
     }
 ?>
@@ -128,7 +128,7 @@
         <div class="container">
             <h1>Student Manager - Register</h1>
 
-            <form id="registerForm" type="GET">
+            <form id="registerForm" method="POST">
                 <label for="username">Username</label>
                 <!-- isset($data["username"]) ? $data["username"] : "" -->
                 <input
