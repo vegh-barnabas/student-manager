@@ -1,3 +1,4 @@
+<?php session_start() ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -7,41 +8,45 @@
         <link rel="stylesheet" href="styles.css" />
     </head>
     <body>
-        <?php require 'helper-functions.php' ?>
+        <?php
+            require "helper-functions.php";
 
-        <?php 
+            if(!isset($_SESSION["user"])) {
+                header("Location: $page");
+                exit();
+            }
+
             $students = [
                 [
-                    "ID" => 1,
+                    "id" => 1,
                     "name" => "Thommas Young",
                     "neptun" => "KMLT44",
                     "DOB" => "2005-04-30",
-                    "gender" => 1, // Male
-                    "classes" => [
-                        "Webprogramming",
-                        "Discrete Mathematics"
-                    ]
-                ],
-                [
-                    "ID" => 2,
-                    "name" => "Jim Old",
-                    "neptun" => "ABC254",
-                    "DOB" => "2000-04-27",
-                    "gender" => 1, // Male
-                    "classes" => [
-                        "Webprogramming",
-                    ]
-                ],
-                [
-                    "ID" => 3,
-                    "name" => "Greta Neither",
-                    "neptun" => "LMO8MY",
-                    "DOB" => "2003-02-07",
-                    "gender" => 0, // Female
+                    "gender" => "male",
                     "classes" => [
                         "Webprogramming",
                         "Discrete Mathematics",
                         "Linux Basics"
+                    ]
+                ],
+                [
+                    "id" => 2,
+                    "name" => "Jim Old",
+                    "neptun" => "ABC254",
+                    "DOB" => "2000-04-27",
+                    "gender" => "male",
+                    "classes" => [
+                        "Webprogramming",
+                    ]
+                ],
+                [
+                    "id" => 3,
+                    "name" => "Greta Neither",
+                    "neptun" => "LMO8MY",
+                    "DOB" => "2003-02-07",
+                    "gender" => "female",
+                    "classes" => [
+                        "Linux Basics",
                     ]
                 ],
             ];
@@ -86,11 +91,11 @@
                 <tbody>
                     <?php foreach($students as $student): ?>
                         <tr>
-                            <td><?= $student["ID"] ?></td>
+                            <td><?= $student["id"] ?></td>
                             <td><?= $student["name"] ?></td>
                             <td><?= $student["neptun"] ?></td>
                             <td><?= $student["DOB"] ?></td>
-                            <td><?= $student["gender"] === 1 ? "Male" : "Female" ?></td>
+                            <td><?= ucfirst($student["gender"]) ?></td>
                             <td>
                                 <ul>
                                     <?php foreach($student["classes"] as $class): ?>
@@ -104,7 +109,7 @@
             </table>
             <div class="statistics">
                 <p><strong>Statistics:</strong></p>
-                <p>Oldest Student: <?= $oldest_student["name"] ?> with DOB <?= $oldest_student["DOB"] ?> (<?= calculate_age_from_DOB($oldest_student["DOB"]) ?> years old)</p>
+                <p>Oldest Student:  <?= $oldest_student["name"] ?> with DOB <?= $oldest_student["DOB"] ?> (<?= calculate_age_from_DOB($oldest_student["DOB"]) ?> years old)</p>
                 <p>Total Students: <?= count($students) ?></p>
             </div>
         </div>
