@@ -26,7 +26,6 @@ h1 {
 form {
     display: flex;
     flex-direction: column;
-    padding-bottom: 16px;
 }
 
 form label {
@@ -35,6 +34,7 @@ form label {
 }
 
 form input {
+    margin-bottom: 15px;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -103,16 +103,15 @@ table td {
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
-
-tbody ul {
-    margin: 0;
-}
-
 .statistics {
     margin-top: 20px;
     background: #f1f1f1;
     padding: 10px;
     border-radius: 5px;
+}
+
+#registerLink {
+    padding-top: 16px;
 }
 
 fieldset {
@@ -121,24 +120,16 @@ fieldset {
     margin: 6px;
 }
 
+table tbody ul {
+    padding: 0;
+}
+
 .successMessage {
     color: green;
 }
 
 .error {
-    font-size: 0.9em;
-    color: #d9534f;
-    padding-top: 2px;
-    padding-left: 6px;
-    margin-bottom: 12px;
-}
-
-.error::before {
-    content: '❌ ';
-    font-size: 1em;
-    color: #d9534f;
-}
-
-#loginForm button {
-    margin-top: 6px;
+    color: red;
+    padding-left: 4px;
+    font-size: 13px;
 }
