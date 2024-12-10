@@ -1,13 +1,64 @@
 <?php
-    function is_empty($input, $key) {
-        return !(isset($input[$key]) && trim($input[$key]) !== '');
+    function redirect($page) {
+        header("Location: $page");
+        exit();
     }
 
-    function contains_letter_and_number($str) {
-        $hasLetter = preg_match('/[a-zA-Z]/', $str); // Check for at least one letter
-        $hasNumber = preg_match('/[0-9]/', $str);    // Check for at least one number
+    function generate_random_neptun() {
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $length = 6;
+        $neptun = '';
+
+        for ($i = 0; $i < $length; $i++) {
+            $random_index = rand(0, strlen($characters) - 1);
+            $neptun = $neptun . $characters[$random_index];
+        }
+
+        return $neptun; 
+    }
+
+    function contains_only_uppercase_letters_and_numbers($string) {
+        if (trim($string) === '') {
+            return false;
+        }
     
-        return $hasLetter && $hasNumber; // Both conditions must be true
+        for ($i = 0; $i < strlen($string); $i++) {
+            $char = $string[$i];
+            // Check if the character is not an uppercase letter or a digit
+            if (!ctype_upper($char) || !ctype_digit($char)) {
+                return false;
+            }
+        }
+    
+        return true;
+    }
+
+    function contains_letter_and_number($string) {
+        $has_letter = false;
+        $has_number = false;
+    
+        for ($i = 0; $i < strlen($string); $i++) {
+            $char = $string[$i];
+    
+            // Check if the character is a letter
+            if (ctype_alpha($char)) {
+                $has_letter = true;
+            }
+            // Check if the character is a digit
+            if (ctype_digit($char)) {
+                $has_number = true;
+            }
+    
+            if ($has_letter && $has_number) {
+                return true;
+            }
+        }
+    
+        return false;
+    }
+
+    function is_empty($input, $key) {
+        return !(isset($input[$key]) && trim($input[$key]) !== '');
     }
 
     // Calculate age from DOB
