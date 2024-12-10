@@ -80,7 +80,6 @@
 
     // Start
     $user_storage = new Storage(new JsonIO("users.json"));
-    $success = false;
     $errors = [];
     $data = [];
     $input = $_GET;
@@ -88,14 +87,15 @@
     if(count($input) !== 0) {
         if(validate($input, $data, $errors)) {
             // Validation successful
-            $success = true;
 
+            // Generate unique neptun
             $neptun = generate_random_neptun();
             $user_with_neptun = $user_storage->findOne(["neptun" => $neptun]);
             while(isset($user_with_neptun)) {
                 $neptun = generate_random_neptun();
             }
 
+            // Add user to "database"
             $user_id = $user_storage->add([
                 "username" => $data["username"],
                 "password" => password_hash($data['password'], PASSWORD_DEFAULT),
@@ -104,9 +104,10 @@
                 "classes" => $data["classes"]
             ]);
 
+            // Log user in
             $user = $user_storage->findById($user_id);
-
             $_SESSION["user"] = $user;
+
             redirect("student-list.php");
         }
     }
@@ -126,10 +127,6 @@
         </nav>
         <div class="container">
             <h1>Student Manager - Register</h1>
-
-            <?php if($success): ?>
-                <h3 class="successMessage">Registration successful! Now you can log in!</h3>
-            <?php endif ?>
 
             <form id="registerForm" type="GET">
                 <label for="username">Username</label>
