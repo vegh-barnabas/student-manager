@@ -15,7 +15,6 @@
             // - Validation rules -
             // Username should be: minimum 3 characters, maximum 8 characters
             // Password should be: minimum 3 characters, no maximum, should contain number and letter too
-            // Neptun code should be: 6 characters long, uppercase letters or numbers
             // Gender should be: Either Male or Female
             // Classes should be: Empty, or any elements from the checkbox options
 
@@ -56,21 +55,6 @@
                 }
                 else {
                     $data["password"] = $input["password"];
-                }
-
-                // Neptun - todo implement generation on db save
-                $data["neptun"] = null;
-                if(is_empty($input, "neptun")) {
-                    $errors["neptun"] = "Neptun is mandatory!";
-                }
-                else if(strlen($input["neptun"]) !== 6) {
-                    $errors["neptun"] = "Neptun code should be 6 characters long!";
-                }
-                else if(contains_only_uppercase_letters_and_numbers($input["neptun"])) {
-                    $errors[] = "Neptun code should be all uppercase letters and numbers!";
-                }
-                else {
-                    $data["neptun"] = $input["neptun"];
                 }
 
                 // Gender
@@ -116,16 +100,26 @@
                     // Validation successful
                     $success = true;
 
-                    $user_storage->add([
+                    $neptun = generate_random_neptun();
+                    $user_with_neptun = $user_storage->findOne(["neptun" => $neptun]);
+                    var_dump($user_with_neptun);
+                    while(isset($user_with_neptun)) {
+                        $neptun = generate_random_neptun();
+                    }
+
+                    $user_id = $user_storage->add([
                         "username" => $data["username"],
                         "password" => password_hash($data['password'], PASSWORD_DEFAULT),
-                        "neptun" => $data["neptun"],
+                        "neptun" => $neptun,
                         "gender" => $data["gender"],
                         "classes" => $data["classes"]
                     ]);
 
+                    $user = $user_storage->findById($user_id);
+
                     $_SESSION["user"] = $user;
                     redirect("student-list.php");
+                    var_dump($_SESSION["user"]);
                 }
             }
         ?>
@@ -176,18 +170,6 @@
                 />
                 <?php if(isset($errors["passwordConfirm"])) : ?>
                     <div class="error"><?= $errors["passwordConfirm"] ?></div>
-                <?php endif ?>
-
-                <label for="neptun">Neptun Code</label>
-                <input
-                    type="text"
-                    id="neptun"
-                    name="neptun"
-                    placeholder="Enter the neptun code"
-                    value="<?= $data["neptun"] ?? "" ?>"
-                />
-                <?php if(isset($errors["neptun"])) : ?>
-                    <div class="error"><?= $errors["neptun"] ?></div>
                 <?php endif ?>
 
                 <fieldset>
