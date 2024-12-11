@@ -4,6 +4,11 @@
     require "helper-functions.php";
     require "storage.php";
 
+    $input = $_POST;
+    if(count($input) !== 0 && isset($input["logout"])) {
+        logout();
+    }
+
     if(!isset($_SESSION["user"])) {
         redirect("index.php");
     }
@@ -41,6 +46,9 @@
                 <a href="#">Add student</a>
             </div>
             <div id="right">
+            <form method="POST">
+                <button type="submit" name="logout">Log out</button>
+            </form>
                 <span id="userInfo"><?= $_SESSION["user"]["username"] ?> | <?= $_SESSION["user"]["neptun"] ?></span>
             </div>
         </nav>

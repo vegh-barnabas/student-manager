@@ -1,4 +1,8 @@
 <?php
+    function logout() {
+        unset($_SESSION["user"]);
+    }
+
     function is_at_least_18($date_of_birth) {
         // Extract year, month, and day from the date string
         $parts = explode('-', $date_of_birth);

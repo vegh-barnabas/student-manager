@@ -53,6 +53,17 @@ form button:hover {
     background: #0056b3;
 }
 
+.navbar #right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.navbar #left {
+    display: flex;
+    align-items: center;
+}
+
 .navbar {
     background: #007bff;
     padding: 10px;
@@ -69,6 +80,14 @@ form button:hover {
 
 .navbar span#userInfo {
     opacity: 0.7;
+    font-size: 9px;
+}
+
+.navbar button {
+    color: #fff;
+    text-decoration: none;
+    opacity: 0.7;
+    padding: 5px 10px;
 }
 
 .navbar a {

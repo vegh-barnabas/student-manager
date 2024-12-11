@@ -11,6 +11,10 @@
     $data = [];
     $input = $_POST;
 
+    if(isset($_SESSION["user"])) {
+        redirect("student-list.php");
+    }
+
     if(count($input) !== 0) {
         $user = $user_storage->findOne(["username" => $input["username"]]);
         if(password_verify($input["password"], $user["password"])) {
