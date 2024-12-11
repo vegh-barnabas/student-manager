@@ -17,7 +17,12 @@
 
     if(count($input) !== 0) {
         $user = $user_storage->findOne(["username" => $input["username"]]);
-        if(password_verify($input["password"], $user["password"])) {
+
+        if($user == null) {
+            $errors["login"] = "This username/password combination doesn't exist.";
+        }
+
+        else if(password_verify($input["password"], $user["password"])) {
             // Login successful
             $_SESSION["user"] = $user;
             redirect("student-list.php");
@@ -57,6 +62,11 @@
                     placeholder="Enter your password"
                     required
                 />
+                
+                <?php if(isset($errors["login"])) : ?>
+                    <div class="error"><?= $errors["login"] ?></div>
+                <?php endif ?>
+
                 <button type="submit">Login</button>
             </form>
             <a id="registerLink" href="register.php">Click here to register!</a>
