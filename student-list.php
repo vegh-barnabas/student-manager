@@ -98,7 +98,7 @@
 
             <div class="studentSearch">
                 <input type="text" id="searchStudentInput">
-                <button id="searchStudentButton">Search Students including "a" letter</button>
+                <button id="searchStudentButton">Search students by neptun</button>
                 <p id="searchStudentResult"></p>
             </div>
         </div>
