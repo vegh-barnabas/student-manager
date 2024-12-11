@@ -114,7 +114,8 @@
                 "neptun" => $neptun,
                 "dateOfBirth" => $data["dateOfBirth"],
                 "gender" => $data["gender"],
-                "classes" => $data["classes"]
+                "classes" => $data["classes"],
+                "roles" => []
             ]);
 
             // Log user in

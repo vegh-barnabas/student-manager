@@ -42,8 +42,10 @@
         <nav class="navbar">
             <div id="left">
                 <span id="title">Student Manager</span>
-                <a href="student-list.html" class="current">Students</a>
-                <a href="#">Add student</a>
+                <a href="student-list.php" class="current">Students</a>
+                <?php if(in_array("admin", $_SESSION["user"]["roles"])): ?>
+                    <a href="#">Add student</a>
+                <?php endif ?>
             </div>
             <div id="right">
             <form method="POST">

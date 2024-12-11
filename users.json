@@ -10,6 +10,9 @@
             "discrete",
             "linux"
         ],
+        "roles": [
+            "admin"
+        ],
         "id": "67588ecad11bb"
     }
 }
