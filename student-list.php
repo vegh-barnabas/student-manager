@@ -93,6 +93,39 @@
                 <p>Oldest Student:  <?= $oldest_student["username"] ?> with DOB <?= $oldest_student["dateOfBirth"] ?> (<?= calculate_age_from_DOB($oldest_student["dateOfBirth"]) ?> years old)</p>
                 <p>Total Students: <?= count($students) ?></p>
             </div>
+
+            <div class="studentSearch">
+                <input type="text" id="searchStudentInput">
+                <button id="searchStudentButton">Search Students including "a" letter</button>
+                <p id="searchStudentResult"></p>
+            </div>
         </div>
+
+        <script>
+            const searchButton = document.querySelector('#searchStudentButton')
+            const searchInput = document.querySelector('#searchStudentInput')
+            const searchResult = document.querySelector('#searchStudentResult')
+
+            searchButton.addEventListener('click', function() {
+                const neptun = searchInput.value
+
+                const xhr = new XMLHttpRequest()
+                xhr.addEventListener('load', responseHandler)
+                xhr.open('GET', `http://localhost:8000/search-handler.php?neptun=${neptun}`)
+                xhr.responseType = 'json'
+                xhr.send(null)
+            })
+
+            function responseHandler() {
+                const student = this.response
+                if(student.error) {
+                    searchResult.innerText = student.error
+                }
+                else {
+                   searchResult.innerText = `Student with neptun code ${student.neptun} is ${student.username}`
+                }
+                console.log(student)
+            }
+        </script>
     </body>
 </html>

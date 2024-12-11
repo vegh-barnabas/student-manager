@@ -120,6 +120,7 @@ table td {
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
+
 .statistics {
     margin-top: 20px;
     background: #f1f1f1;
@@ -157,4 +158,21 @@ table tbody ul {
     content: '❌ ';
     font-size: 1em;
     color: #d9534f;
+}
+
+.studentSearch {
+    margin-top: 20px;
+    background: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.studentSearch button {
+    padding-left: 6px;
+    padding-right: 6px;
+    color: #fff;
+    background: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
